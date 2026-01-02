@@ -8,16 +8,37 @@ const App = () => {
 	const [isLoading, setIsLoading] = useState(true);
 	const [err, setErr] = useState(null);
 
+	// .THEN SYNTAX :  useEffect(() => {
+	// 	fetch(API_URL)
+	// 		.then((res) => {
+	// 			if (!res.ok) throw new Error("Failed fetching the data");
+	// 			return res.json();
+	// 		})
+	// 		.then((data) => {
+	// 			setCoins(data);
+	// 			setIsLoading(false);
+	// 		})
+	// 		.catch((err) => {
+	// 			setErr(err.message);
+	// 			setIsLoading(false);
+	// 		});
+	// }, []);
+
+	// ASYNC AWAIT SYNTAX:
 	useEffect(() => {
-		fetch(API_URL).then((res) => {
-			if (!res.ok) {
-				throw new Error("Failed fetching the data");
-			}
-			return res.json().then((data) => {
+		const fetchCoins = async () => {
+			try {
+				const res = await fetch(API_URL);
+				if (!res.ok) throw new Error("failed to fetch data");
+				const data = await res.json();
 				setCoins(data);
+			} catch (error) {
+				setErr(error.message);
+			} finally {
 				setIsLoading(false);
-			}).catch((err)=>{setErr(err.message); setIsLoading(false);});
-		});
+			}
+		};
+		fetchCoins();
 	}, []);
 
 	return (
