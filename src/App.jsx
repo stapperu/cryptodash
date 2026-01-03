@@ -8,6 +8,8 @@ const App = () => {
 	const [isLoading, setIsLoading] = useState(true);
 	const [err, setErr] = useState(null);
 
+	const showMore=()=>{}
+
 	// .THEN SYNTAX :  useEffect(() => {
 	// 	fetch(API_URL)
 	// 		.then((res) => {
@@ -55,15 +57,57 @@ const App = () => {
 			{!isLoading && !err && (
 				<main className="mt-20 mb-20 grid w-5/6 grid-cols-3 grid-rows-2 gap-8 m-auto">
 					{coins.map((coin) =>(
-						<div className="h-50 w-full text-center shadow-md shadow-gray-700 rounded-2xl">
-							<h3 className="text-2xl">{coin.name}</h3>
+						<div className="content-center h-50 w-full text-center bg-green-800/10 inset-shadow-sm border-t-3 border-green-900 inset-shadow-green-200 rounded-2xl">
+							<h2 className="text-3xl">{coin.name}</h2>
 <p className="uppercase text-sm text-green-400">{coin.symbol}</p>
-<p className="uppercase text-2xl text-white"><span className="m-2inline-block text-green-800 lowercase text-sm">Price: </span>{coin.current_price} USD</p>
-<p className="uppercase text-sm font-extralight text-white"><span className="m-2 text-green-800 lowercase text-sm">Market:</span>{coin.market_cap}</p>
+<p className="m-3 uppercase text-3xl text-white"><span className="m-2inline-block text-green-800 lowercase text-sm">Price: </span>{coin.price_change_percentage_24h > 0 ? (
+    <>
+      {coin.current_price.toLocaleString('de-DE')} USD
+      <svg
+        className="inline-block ml-2 w-5 h-5"
+        viewBox="0 0 100 100"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+          <path d="M0,0 L0,6 L9,3 z" fill="#22c55e" />
+        </marker>
+        <line
+          x1="20" y1="80" x2="80" y2="20"
+          stroke="#22c55e"
+          strokeWidth="10"
+          markerEnd="url(#arrowhead)"
+        />
+      </svg>
+      <span className="ml-1 text-green-500 text-base">
+        +{coin.price_change_percentage_24h.toFixed(2)}%
+      </span>
+    </>
+  ) : (
+  <>
+    {coin.current_price.toLocaleString('de-DE')} USD
+    <svg
+  className="inline-block ml-2 w-5 h-5"
+  viewBox="0 0 100 100"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <marker id="arrowhead-down" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto">
+    <path d="M0,0 L0,6 L9,3 z" fill="#ef4444" /> 
+  </marker>
+  <line
+    x1="20" y1="20" x2="80" y2="80"
+    stroke="#ef4444"
+    strokeWidth="10"
+    markerEnd="url(#arrowhead-down)"
+  />
+</svg>
+    <span className="ml-1 text-red-500 text-base" >{coin.price_change_percentage_24h.toFixed(2)}%</span>
+  </>
+) }</p>
+<p className="uppercase text-xs font-extralight text-gray-400"><span className="m-2 text-green-800 lowercase">Market:</span>{coin.market_cap.toLocaleString('de-DE')} USD</p>
 
 						</div>
 					))}
-          <div className="h-50 w-full text-center shadow-md shadow-gray-700 rounded-2xl">Load more...</div>
+          <div className="content-center h-4/6 w-4/6 m-auto text-center inset-shadow-sm border-t-3 bg-green-800 border-green-900 inset-shadow-green-200 rounded-2xl" onClick={showMore}>Load more...</div>
 				</main>
 			)}
 		</>
