@@ -1,23 +1,49 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import "./index.css";
-const API_URL=import.meta.env.VITE_API_URL;
+const API_URL = import.meta.env.VITE_API_URL;
 
 const App = () => {
 	const [coins, setCoins] = useState([]);
+	const [filteredCoins, setFilteredCoins] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
 	const [err, setErr] = useState(null);
-	const [limit,setLimit]=useState(12)
+	const [limit, setLimit] = useState(12);
 
 	const showMore = () => {
-		setLimit((prevLimit)=> prevLimit+12)
+		setLimit((prevLimit) => prevLimit + 12);
 	};
 
-	const scrollToTop = () => {};
+	const scrollToTop = () => {
+		window.scrollTo(0, 0);
+	};
 
-	const displayAmount = (e) => { setLimit(e.target.value);
-		console.log(e.target.value);
-	}
-	
+	const displayAmount = (e) => {
+		setLimit(e.target.value);
+	};
+
+	const openDetails = (e) => {
+		const targetName = e.currentTarget.querySelector("h2");
+		return (
+			<>
+				<h1>{targetName}</h1>
+			</>
+		);
+	};
+
+	const filterCoins = (e) => {
+		const formattedSearch = e.target.value.toLowerCase();
+		if (formattedSearch === "") {
+			setFilteredCoins(coins);
+		} else {
+			setFilteredCoins(
+				coins.filter(
+					(coin) =>
+						coin.name.toLowerCase().includes(formattedSearch) ||
+						coin.symbol.toLowerCase().includes(formattedSearch)
+				)
+			);
+		}
+	};
 
 	// .THEN SYNTAX :  useEffect(() => {
 	// 	fetch(API_URL)
@@ -41,9 +67,13 @@ const App = () => {
 			try {
 				const res = await fetch(`${API_URL}
 	&order=market_cap_desc&per_page=${parseInt(limit)}&page=1&sparkline=false`);
-				if (!res.ok) throw new Error("failed to fetch data ( possibly exceeding API calls per minute");
+				if (!res.ok)
+					throw new Error(
+						"failed to fetch data ( possibly exceeding API calls per minute"
+					);
 				const data = await res.json();
 				setCoins(data);
+				setFilteredCoins(data);
 			} catch (error) {
 				setErr(error.message);
 			} finally {
@@ -61,30 +91,32 @@ const App = () => {
 					API
 				</span>
 			</p>
-			<h1 className=" m-10 text-2xl italic text- text-green-400 text-center">
+			<h1 className="scale-200 m-10 text-2xl italic text- text-green-400 text-center">
 				Crypto
 				<span className="p-1 pr-3 m-1 text-white font-semibold bg-linear-to-r from-green-400 to-green-900 rounded-lg text-shadow-lg">
 					-DASH
 				</span>
 			</h1>
-			<div className="text-sm fixed m-3 l-0 top-50">
-			<label htmlFor="limit">Show:</label>
-				<select className="bg-gray-800" name="limit" id="limit" onChange={displayAmount}>
-					<option value="12">Default</option>
-			<option value="20">+20</option>
-			<option value="40">+40</option>
-			<option value="50">+50</option>
-			</select>
-		</div>
-			
+			<div className="flex justify-center">
+				<input
+					className=" bg-green-400/20 hover:bg-green-400 text-gray-500"
+					type="text"
+					id="search"
+					name="search"
+					placeholder="Search..."
+					size="30"
+					onChange={filterCoins}
+				/>
+			</div>
 			{isLoading && <p className="text-center m-auto">Loading...</p>}
 			{err && <p>{err}</p>}
 			{!isLoading && !err && (
 				<main className="mt-20 mb-20 grid w-5/6 xl:grid-cols-3 lg:grid-cols-2 sm:grid-cols-2 xl:grid-rows-2 lg:grid-rows-2 sm:grid-rows-2 gap-6 m-auto">
-					{coins.map((coin) => (
+					{filteredCoins.map((coin) => (
 						<div
 							className="content-center h-50 w-full text-center bg-gray-800/40 inset-shadow-sm border-t-3 border-green-900 inset-shadow-green-200 rounded-2xl"
 							key={coin.id}
+							onClick={openDetails}
 						>
 							<h2 className="inline-block text-2xl">{coin.name}</h2>
 							<img
@@ -172,13 +204,27 @@ const App = () => {
 					<div>
 						{" "}
 						<div
-							className="m-4 p-2  h-12 w-40 text-center sticky text-lg text-gray-900 inset-shadow-sm border-t-3 bg-green-500 border-green-900 inset-shadow-green-200 rounded-4xl"
+							className="m-4 p-2  h-12 w-40 text-center sticky text-lg text-white inset-shadow-sm border-t-3 bg-green-700/20 border-green-900 inset-shadow-green-200 rounded-4xl cursor-pointer"
 							onClick={showMore}
 						>
 							Load more...
 						</div>
+						<div className="m-2 p-1 fixed right-0 bottom-35 content-center h-10 w-auto text-center text-xs text-white inset-shadow-sm bg-green-800/20 inset-shadow-green-200 rounded-xl cursor-pointer">
+							<label htmlFor="limit">Show:</label>
+							<select
+								className="bg-gray-800"
+								name="limit"
+								id="limit"
+								onChange={displayAmount}
+							>
+								<option value="12">Default</option>
+								<option value="20">+20</option>
+								<option value="40">+40</option>
+								<option value="50">+50</option>
+							</select>
+						</div>
 						<div
-							className="m-4 p-2 fixed right-0 bottom-8 content-center h-10 w-auto text-center text-xs text-gray-900 inset-shadow-sm border-t-3 bg-green-500 border-green-900 inset-shadow-green-200 rounded-4xl"
+							className="m-2 p-2 fixed right-0 bottom-20 content-center h-10 w-auto text-center text-xs text-white inset-shadow-sm bg-green-800/20 inset-shadow-green-200 rounded-2xl cursor-pointer"
 							onClick={scrollToTop}
 						>
 							Scroll to top ^
