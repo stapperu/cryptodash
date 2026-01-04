@@ -1,16 +1,23 @@
 import { useEffect, useState } from "react";
 import "./index.css";
-const API_URL =
-	"https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=12&page=1&sparkline=false";
+const API_URL=import.meta.env.VITE_API_URL;
 
 const App = () => {
 	const [coins, setCoins] = useState([]);
 	const [isLoading, setIsLoading] = useState(true);
 	const [err, setErr] = useState(null);
+	const [limit,setLimit]=useState(12)
 
-	const showMore = () => {};
+	const showMore = () => {
+		setLimit((prevLimit)=> prevLimit+12)
+	};
 
 	const scrollToTop = () => {};
+
+	const displayAmount = (e) => { setLimit(e.target.value);
+		console.log(e.target.value);
+	}
+	
 
 	// .THEN SYNTAX :  useEffect(() => {
 	// 	fetch(API_URL)
@@ -32,8 +39,9 @@ const App = () => {
 	useEffect(() => {
 		const fetchCoins = async () => {
 			try {
-				const res = await fetch(API_URL);
-				if (!res.ok) throw new Error("failed to fetch data");
+				const res = await fetch(`${API_URL}
+	&order=market_cap_desc&per_page=${parseInt(limit)}&page=1&sparkline=false`);
+				if (!res.ok) throw new Error("failed to fetch data ( possibly exceeding API calls per minute");
 				const data = await res.json();
 				setCoins(data);
 			} catch (error) {
@@ -43,7 +51,7 @@ const App = () => {
 			}
 		};
 		fetchCoins();
-	}, []);
+	}, [limit]);
 
 	return (
 		<>
@@ -53,12 +61,22 @@ const App = () => {
 					API
 				</span>
 			</p>
-			<h1 className=" m-10 text-3xl italic text- text-green-400 text-center">
+			<h1 className=" m-10 text-2xl italic text- text-green-400 text-center">
 				Crypto
 				<span className="p-1 pr-3 m-1 text-white font-semibold bg-linear-to-r from-green-400 to-green-900 rounded-lg text-shadow-lg">
 					-DASH
 				</span>
 			</h1>
+			<div className="text-sm fixed m-3 l-0 top-50">
+			<label htmlFor="limit">Show:</label>
+				<select className="bg-gray-800" name="limit" id="limit" onChange={displayAmount}>
+					<option value="12">Default</option>
+			<option value="20">+20</option>
+			<option value="40">+40</option>
+			<option value="50">+50</option>
+			</select>
+		</div>
+			
 			{isLoading && <p className="text-center m-auto">Loading...</p>}
 			{err && <p>{err}</p>}
 			{!isLoading && !err && (
@@ -68,14 +86,14 @@ const App = () => {
 							className="content-center h-50 w-full text-center bg-gray-800/40 inset-shadow-sm border-t-3 border-green-900 inset-shadow-green-200 rounded-2xl"
 							key={coin.id}
 						>
-							<h2 className="inline-block text-3xl">{coin.name}</h2>
+							<h2 className="inline-block text-2xl">{coin.name}</h2>
 							<img
 								className="m-2 h-8 w-8 inline-block mt-auto"
 								src={coin.image}
 								alt={coin.name}
 							/>
 							<p className="uppercase text-sm text-green-400">{coin.symbol}</p>
-							<p className="m-3 uppercase text-3xl text-white">
+							<p className="m-3 uppercase text-2xl text-white">
 								<span className="m-2inline-block text-green-800 lowercase text-sm">
 									Price:{" "}
 								</span>
@@ -108,7 +126,7 @@ const App = () => {
 											/>
 										</svg>
 										<span className="ml-1 text-green-500 text-base">
-											+{coin.price_change_percentage_24h.toFixed(2)}%
+											+{coin.price_change_percentage_24h}%
 										</span>
 									</>
 								) : (
@@ -140,7 +158,7 @@ const App = () => {
 											/>
 										</svg>
 										<span className="ml-1 text-red-500 text-base">
-											{coin.price_change_percentage_24h.toFixed(2)}%
+											{coin.price_change_percentage_24h}%
 										</span>
 									</>
 								)}
@@ -160,7 +178,7 @@ const App = () => {
 							Load more...
 						</div>
 						<div
-							className="m-4 p-2 fixed right-0 bottom-0 content-center h-10 w-auto text-center text-sm text-gray-900 inset-shadow-sm border-t-3 bg-green-500 border-green-900 inset-shadow-green-200 rounded-4xl"
+							className="m-4 p-2 fixed right-0 bottom-8 content-center h-10 w-auto text-center text-xs text-gray-900 inset-shadow-sm border-t-3 bg-green-500 border-green-900 inset-shadow-green-200 rounded-4xl"
 							onClick={scrollToTop}
 						>
 							Scroll to top ^
