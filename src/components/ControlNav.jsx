@@ -12,16 +12,10 @@ const ControlNav = ({
 
 	const handleScroll = () => {
 		if (window.scrollY < 200) { 
-            console.log("under 200");
 			setIsTop(true);      
 		} else { 
-            console.log("over200");
 			setIsTop(false);      
-		}
-        console.log(window.scrollY);
- 
-	};
-    console.log(isTop);
+		}};
 
 	window.addEventListener("scroll", handleScroll);
 
