@@ -93,13 +93,13 @@ const App = () => {
 					API
 				</span>
 			</p>
-			<h1 className="scale-150 m-10 text-2xl italic text- text-green-400 text-center">
+			<h1 className="scale-150 m-6 text-2xl italic text- text-green-400 text-center">
 				Crypto
 				<span className="p-1 pr-3 m-1 text-white font-semibold bg-linear-to-r from-green-400 to-green-900 rounded-lg text-shadow-lg">
 					-TOP
 				</span>
-				<h2 className="text-xs text-white m-2 font-extralight">Look up up to 100 most popular crypto coins! </h2>
 			</h1>
+				<h2 className= " text-sm text-center text-white mb-2 font-extralight">Look up up to 100 most popular crypto coins! </h2>
 			<ControlNav coins={coins} filterCoins={filterCoins} filteredCoins={filteredCoins} displayAmount={displayAmount} scrollToTop={scrollToTop} />
 			{isLoading && <p className="text-center m-auto">Loading...</p>}
 			{err && <p>{err}</p>}
