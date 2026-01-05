@@ -4,15 +4,4 @@ body {
 	@apply bg-gray-900 text-2xl text-green-50;
   font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
-/* .coingrid {
-  
-  margin: 5rem auto;
-  width:80%;
-  align-self:center;
-  display: grid;
-  grid-template-columns: 3fr 3fr 3fr ;
-  grid-template-rows: 3fr 3fr 3fr;
-  row-gap: 20px;
 
-   */
-/* } */

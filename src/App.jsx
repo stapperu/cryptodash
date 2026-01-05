@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import "./index.css";
 const API_URL = import.meta.env.VITE_API_URL;
+import ControlNav from "./components/ControlNav";
 
 const App = () => {
 	const [coins, setCoins] = useState([]);
@@ -91,23 +92,13 @@ const App = () => {
 					API
 				</span>
 			</p>
-			<h1 className="scale-200 m-10 text-2xl italic text- text-green-400 text-center">
+			<h1 className="scale-150 m-10 text-2xl italic text- text-green-400 text-center">
 				Crypto
 				<span className="p-1 pr-3 m-1 text-white font-semibold bg-linear-to-r from-green-400 to-green-900 rounded-lg text-shadow-lg">
 					-DASH
 				</span>
 			</h1>
-			<div className="flex justify-center">
-				<input
-					className=" bg-green-400/20 hover:bg-green-400 text-gray-500"
-					type="text"
-					id="search"
-					name="search"
-					placeholder="Search..."
-					size="30"
-					onChange={filterCoins}
-				/>
-			</div>
+			<ControlNav coins={coins} filterCoins={filterCoins} filteredCoins={filteredCoins} displayAmount={displayAmount} scrollToTop={scrollToTop} />
 			{isLoading && <p className="text-center m-auto">Loading...</p>}
 			{err && <p>{err}</p>}
 			{!isLoading && !err && (
@@ -129,70 +120,70 @@ const App = () => {
 								<span className="m-2inline-block text-green-800 lowercase text-sm">
 									Price:{" "}
 								</span>
-								{coin.price_change_percentage_24h > 0 ? (
+								{coin.current_price.toLocaleString()} USD
+								{coin.price_change_percentage_24h != null ? (
 									<>
-										{coin.current_price.toLocaleString()} USD
 										<svg
 											className="inline-block ml-2 w-5 h-5"
 											viewBox="0 0 100 100"
 											xmlns="http://www.w3.org/2000/svg"
 										>
 											<marker
-												id="arrowhead"
+												id={
+													coin.price_change_percentage_24h > 0
+														? "arrowhead-up"
+														: "arrowhead-down"
+												}
 												markerWidth="10"
 												markerHeight="10"
 												refX="8"
 												refY="3"
 												orient="auto"
 											>
-												<path d="M0,0 L0,6 L9,3 z" fill="#22c55e" />
+												<path
+													d="M0,0 L0,6 L9,3 z"
+													fill={
+														coin.price_change_percentage_24h > 0
+															? "#22c55e"
+															: "#ef4444"
+													}
+												/>
 											</marker>
 											<line
 												x1="20"
-												y1="80"
+												y1={coin.price_change_percentage_24h > 0 ? "80" : "20"}
 												x2="80"
-												y2="20"
-												stroke="#22c55e"
+												y2={coin.price_change_percentage_24h > 0 ? "20" : "80"}
+												stroke={
+													coin.price_change_percentage_24h > 0
+														? "#22c55e"
+														: "#ef4444"
+												}
 												strokeWidth="10"
-												markerEnd="url(#arrowhead)"
+												markerEnd={
+													coin.price_change_percentage_24h > 0
+														? "url(#arrowhead-up)"
+														: "url(#arrowhead-down)"
+												}
 											/>
 										</svg>
-										<span className="ml-1 text-green-500 text-base">
-											+{coin.price_change_percentage_24h}%
+
+										<span
+											className={`ml-1 text-base ${
+												coin.price_change_percentage_24h > 0
+													? "text-green-500"
+													: "text-red-500"
+											}`}
+										>
+											{coin.price_change_percentage_24h > 0 ? "+" : ""}
+											{coin.price_change_percentage_24h.toFixed(2)}%
 										</span>
 									</>
 								) : (
-									<>
-										{coin.current_price.toLocaleString()} USD
-										<svg
-											className="inline-block ml-2 w-5 h-5"
-											viewBox="0 0 100 100"
-											xmlns="http://www.w3.org/2000/svg"
-										>
-											<marker
-												id="arrowhead-down"
-												markerWidth="10"
-												markerHeight="10"
-												refX="8"
-												refY="3"
-												orient="auto"
-											>
-												<path d="M0,0 L0,6 L9,3 z" fill="#ef4444" />
-											</marker>
-											<line
-												x1="20"
-												y1="20"
-												x2="80"
-												y2="80"
-												stroke="#ef4444"
-												strokeWidth="10"
-												markerEnd="url(#arrowhead-down)"
-											/>
-										</svg>
-										<span className="ml-1 text-red-500 text-base">
-											{coin.price_change_percentage_24h}%
-										</span>
-									</>
+									<span className="ml-2 text-gray-500 text-base">
+										{" "}
+										(No 24h data)
+									</span>
 								)}
 							</p>
 							<p className="uppercase text-xs font-extralight text-gray-400">
@@ -202,33 +193,14 @@ const App = () => {
 						</div>
 					))}
 					<div>
-						{" "}
+						
 						<div
-							className="m-4 p-2  h-12 w-40 text-center sticky text-lg text-white inset-shadow-sm border-t-3 bg-green-700/20 border-green-900 inset-shadow-green-200 rounded-4xl cursor-pointer"
+							className={`${filteredCoins.length!=coins.length ? 'hidden' : 'block'} m-4 p-2  h-12 w-40 text-center sticky text-lg text-white inset-shadow-sm border-t-3 bg-green-700/20 border-green-900 inset-shadow-green-200 rounded-4xl cursor-pointer`}
 							onClick={showMore}
 						>
 							Load more...
 						</div>
-						<div className="m-2 p-1 fixed right-0 bottom-35 content-center h-10 w-auto text-center text-xs text-white inset-shadow-sm bg-green-800/20 inset-shadow-green-200 rounded-xl cursor-pointer">
-							<label htmlFor="limit">Show:</label>
-							<select
-								className="bg-gray-800"
-								name="limit"
-								id="limit"
-								onChange={displayAmount}
-							>
-								<option value="12">Default</option>
-								<option value="20">+20</option>
-								<option value="40">+40</option>
-								<option value="50">+50</option>
-							</select>
-						</div>
-						<div
-							className="m-2 p-2 fixed right-0 bottom-20 content-center h-10 w-auto text-center text-xs text-white inset-shadow-sm bg-green-800/20 inset-shadow-green-200 rounded-2xl cursor-pointer"
-							onClick={scrollToTop}
-						>
-							Scroll to top ^
-						</div>
+						
 					</div>
 				</main>
 			)}
