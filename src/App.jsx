@@ -102,7 +102,7 @@ const App = () => {
 			{isLoading && <p className="text-center m-auto">Loading...</p>}
 			{err && <p>{err}</p>}
 			{!isLoading && !err && (
-				<main className="mt-20 mb-20 grid w-5/6 xl:grid-cols-3 lg:grid-cols-2 sm:grid-cols-2 xl:grid-rows-2 lg:grid-rows-2 sm:grid-rows-2 gap-6 m-auto">
+				<main className="mt-10 mb-10 grid w-5/6 xl:grid-cols-3 lg:grid-cols-2 sm:grid-cols-2 xl:grid-rows-2 lg:grid-rows-2 sm:grid-rows-2 gap-6 m-auto">
 					{filteredCoins.map((coin) => (
 						<div
 							className="content-center h-50 w-full text-center bg-gray-800/40 inset-shadow-sm border-t-3 border-green-900 inset-shadow-green-200 rounded-2xl"
@@ -195,7 +195,7 @@ const App = () => {
 					<div>
 						
 						<div
-							className={`${filteredCoins.length!=coins.length ? 'hidden' : 'block'} m-4 p-2  h-12 w-40 text-center sticky text-lg text-white inset-shadow-sm border-t-3 bg-green-700/20 border-green-900 inset-shadow-green-200 rounded-4xl cursor-pointer`}
+							className={`${filteredCoins.length!=coins.length ? 'hidden' : 'block'} m-4 p-2  h-12 w-40 text-center sticky text-lg text-white inset-shadow-sm border-t-3 bg-green-700/20 border-green-900 inset-shadow-green-200 rounded-2xl cursor-pointer`}
 							onClick={showMore}
 						>
 							Load more...
