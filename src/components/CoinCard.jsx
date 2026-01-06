@@ -7,7 +7,7 @@ const CoinCard = ({coin}) => {
 <Link to={`../coins/${coin.id}`}>
      <div
 							className="content-center h-50 w-full text-center bg-gray-800/40 inset-shadow-sm border-t-3 border-green-900 inset-shadow-green-200 rounded-2xl"
-							key={coin.id}
+							
 						
 						>
 							<h2 className="inline-block text-2xl">{coin.name}</h2>
