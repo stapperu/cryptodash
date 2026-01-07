@@ -1,6 +1,9 @@
 import { useParams } from "react-router";
 import { useEffect, useState } from "react";
+import CoinChartComponent from "../components/CoinChartComponent";
 const API_COINS_URL = import.meta.env.VITE_API_COINS_URL;
+
+
 
 const CoinPage = () => {
 	const params = useParams();
@@ -60,7 +63,7 @@ const CoinPage = () => {
 							})}{" "}
 						</div>
               <div className="m-2 text-blue-200 h-8 sm:flex sm:flex-row sm:justify-center w-full text-sm grid grid-cols3"><a href={coin.links.homepage} className="mr-5">Coin's Homepage</a><a href={coin.links.whitepaper} className="mr-5">Coin's Whitepaper PDF</a><a href={coin.links.blockchain_site[1]} className="mr-5">One of Coin's Blockchain Site</a> </div>
-              <h3 className={`mt-8 mb-8 text-4xl ${coin.market_cap_rank===1 ? 'text-yellow-300':'text-white' }`}>#{coin.market_cap_rank}<span className="lowercase text-xs">{coin.market_cap_rank===1 ? "st" : coin.market_cap_rank===2 ? "nd" : coin.market_cap_rank===3 ? "rd" : "th"}</span></h3>
+              <h3 className={`mt-10 mb-6 text-4xl w-20 m-auto scale-250 ${coin.market_cap_rank===1 ? 'text-yellow-300':'text-white' }`}>{coin.market_cap_rank}<span className="lowercase text-xs">{coin.market_cap_rank===1 ? "st" : coin.market_cap_rank===2 ? "nd" : coin.market_cap_rank===3 ? "rd" : "th"}</span></h3>
               <span className=" p-2 border border-yellow-300 inline-block w-60 m-auto text-base">highest market cap </span>
             <h3 className="mt-12 text-4xl">{coin.market_data.current_price.usd.toLocaleString()} USD</h3>
 			<span className="text-yellow-300 uppercase text-base">Current Value</span>
@@ -71,7 +74,7 @@ const CoinPage = () => {
 			<p className="m-1 text-base">Price change percentage in 14 days: <span className={`m-2 text-2xl ${coin.market_data.price_change_percentage_14d<0 ? "text-red-400" : "text-green-400"}`}>{coin.market_data.price_change_percentage_14d} %</span></p>
 			<p className="m-1 text-base">Price change percentage in 30 days: <span className={`m-2 text-2xl ${coin.market_data.price_change_percentage_30d<0 ? "text-red-400" : "text-green-400"}`}>{coin.market_data.price_change_percentage_30d} %</span></p>
 			<p className="m-1 text-base">Price change percentage in 1 year days: <span className={`m-2 text-2xl ${coin.market_data.price_change_percentage_1y<0 ? "text-red-400" : "text-green-400"}`}>{coin.market_data.price_change_percentage_1y} %</span></p>
-			<p>{coin.tickers.trust_score}</p>
+		<CoinChartComponent coin={coin} params={params}/>
 
 
 
