@@ -17,9 +17,9 @@ const CoinCard = ({coin}) => {
 								alt={coin.name}
 							/>
 							<p className="uppercase text-sm text-green-400">{coin.symbol}</p>
-							<p className="m-3 uppercase text-2xl text-white">
-								<span className="m-2inline-block text-green-800 lowercase text-sm">
-									Price:{" "}
+							<p className="m-3 text-2xl text-white">
+								<span className="m-2inline-block text-green-800 text-sm">
+									Value:{" "}
 								</span>
 								{coin.current_price.toLocaleString()} USD
 								{coin.price_change_percentage_24h != null ? (
