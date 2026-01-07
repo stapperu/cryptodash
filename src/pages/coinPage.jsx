@@ -60,10 +60,21 @@ const CoinPage = () => {
 							})}{" "}
 						</div>
               <div className="m-2 text-blue-200 h-8 sm:flex sm:flex-row sm:justify-center w-full text-sm grid grid-cols3"><a href={coin.links.homepage} className="mr-5">Coin's Homepage</a><a href={coin.links.whitepaper} className="mr-5">Coin's Whitepaper PDF</a><a href={coin.links.blockchain_site[1]} className="mr-5">One of Coin's Blockchain Site</a> </div>
-              <h3 className={`mt-16 mb-7 text-4xl scale-400 ${coin.market_cap_rank===1 ? 'text-yellow-300':'text-white' }`}>#{coin.market_cap_rank}<span className="lowercase text-xs">{coin.market_cap_rank===1 ? "st" : coin.market_cap_rank===2 ? "nd" : coin.market_cap_rank===3 ? "rd" : "th"}</span></h3>
-              <span className=" p-2 border border-yellow-300 inline-block w-50 m-auto text-base">highest market cap </span>
-            <h3 className="mt-12 text-4xl scale-140 ">{coin.market_data.current_price.usd.toLocaleString()} USD</h3>
+              <h3 className={`mt-8 mb-8 text-4xl ${coin.market_cap_rank===1 ? 'text-yellow-300':'text-white' }`}>#{coin.market_cap_rank}<span className="lowercase text-xs">{coin.market_cap_rank===1 ? "st" : coin.market_cap_rank===2 ? "nd" : coin.market_cap_rank===3 ? "rd" : "th"}</span></h3>
+              <span className=" p-2 border border-yellow-300 inline-block w-60 m-auto text-base">highest market cap </span>
+            <h3 className="mt-12 text-4xl">{coin.market_data.current_price.usd.toLocaleString()} USD</h3>
 			<span className="text-yellow-300 uppercase text-base">Current Value</span>
+			<p className="mt-8 text-green-400  text-base">24h peak :{coin.market_data.high_24h.usd} USD</p>
+			<p className="m-1 text-red-400 text-base">24h lowest :{coin.market_data.low_24h.usd} USD</p>
+			<p className="mt-3 text-base">Price change percentage in 24h: <span className={`m-2 text-2xl ${coin.market_data.price_change_percentage_24h<0 ? "text-red-400" : "text-green-400"}`}>{coin.market_data.price_change_percentage_24h} %</span></p>
+			<p className="m-1 text-base">Price change percentage in 7 days: <span className={`m-2 text-2xl ${coin.market_data.price_change_percentage_7d<0 ? "text-red-400" : "text-green-400"}`}>{coin.market_data.price_change_percentage_7d} %</span></p>
+			<p className="m-1 text-base">Price change percentage in 14 days: <span className={`m-2 text-2xl ${coin.market_data.price_change_percentage_14d<0 ? "text-red-400" : "text-green-400"}`}>{coin.market_data.price_change_percentage_14d} %</span></p>
+			<p className="m-1 text-base">Price change percentage in 30 days: <span className={`m-2 text-2xl ${coin.market_data.price_change_percentage_30d<0 ? "text-red-400" : "text-green-400"}`}>{coin.market_data.price_change_percentage_30d} %</span></p>
+			<p className="m-1 text-base">Price change percentage in 1 year days: <span className={`m-2 text-2xl ${coin.market_data.price_change_percentage_1y<0 ? "text-red-400" : "text-green-400"}`}>{coin.market_data.price_change_percentage_1y} %</span></p>
+			<p>{coin.tickers.trust_score}</p>
+
+
+
 					</>
 				)}
 			</div>
