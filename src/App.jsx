@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from "react";
-import "./index.css";
+import "./src/index.css";
 const API_URL = import.meta.env.VITE_API_URL;
 import ControlNav from "./components/ControlNav";
 import { NavLink } from "react-router";
