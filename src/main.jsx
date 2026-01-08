@@ -8,7 +8,7 @@ import NotFound from './pages/notFound.jsx'
 
 
 createRoot(document.getElementById('root')).render(
-<BrowserRouter>
+<BrowserRouter basename="/cryptodash">
 <Routes>
       <Route path="/" element={<App />} />
       <Route path='/coins/:id' element={<CoinPage />} />
