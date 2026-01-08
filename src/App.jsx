@@ -67,8 +67,7 @@ const App = () => {
 	useEffect(() => {
 		const fetchCoins = async () => {
 			try {
-				const res = await fetch(`${API_URL}
-	&order=market_cap_desc&per_page=${parseInt(limit)}&page=1&sparkline=false`);
+				const res = await fetch(`${API_URL}&order=market_cap_desc&per_page=${parseInt(limit)}&page=1&sparkline=false`);
 				if (!res.ok)
 					throw new Error(
 						"failed to fetch data ( possibly exceeding API calls per minute"
