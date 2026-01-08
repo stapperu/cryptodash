@@ -92,7 +92,7 @@ const App = () => {
 					API
 				</span>
 			</p>
-			<h1 className="scale-150 m-6 text-2xl italic text- text-green-400 text-center">
+			<h1 className="w-50 m-auto scale-170 mb-8 mt-8 text-2xl italic text- text-green-400 text-center">
 				Crypto
 				<span className="p-1 pr-3 m-1 text-white font-semibold bg-linear-to-r from-green-400 to-green-900 rounded-lg text-shadow-lg">
 					-TOP
