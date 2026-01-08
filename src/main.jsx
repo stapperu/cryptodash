@@ -11,8 +11,8 @@ createRoot(document.getElementById('root')).render(
 <BrowserRouter>
 <Routes>
       <Route path="/" element={<App />} />
-      <Route path={`/coins/:id`} element={<CoinPage />} />
-      <Route path="/*" element={<NotFound />} />
+      <Route path='/coins/:id' element={<CoinPage />} />
+      <Route path="*" element={<NotFound />} />
     </Routes>
 </BrowserRouter>,
 );
