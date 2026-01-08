@@ -4,7 +4,7 @@ const API_URL = import.meta.env.VITE_API_URL;
 import ControlNav from "./components/ControlNav";
 import { NavLink } from "react-router";
 import Footer from "./components/Footer";
-import CoinCard from "./components/coinCard";
+import CoinCard from "./components/CoinCard";
 
 const App = () => {
 	const [coins, setCoins] = useState([]);
