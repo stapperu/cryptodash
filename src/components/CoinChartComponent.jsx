@@ -28,7 +28,7 @@ const [isLoading, setIsLoading] = useState(true);
     useEffect(() => {
             const fetchChartData = async () => {
                 try {
-                    const res = await fetch(`${API_COINS_URL}/${coin.id}/market_chart?vs_currency=usd&days=7`);
+                    const res = await fetch(`${API_COINS_URL}/${coin.id}/market_chart?vs_currency=usd&days=7d`);
                     if (!res.ok)
                         throw new Error(
                             "failed to fetch data ( possibly exceeding API calls per minute"
@@ -44,37 +44,64 @@ const [isLoading, setIsLoading] = useState(true);
             fetchChartData();
         }, []);
         
+const chartDataConfig = {
+  labels: chartData?.prices?.map(([timestamp]) =>
+    new Date(timestamp).toLocaleString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+    })
+  ) || [],
+ 
+
+  datasets: [
+    {
+      label: 'Price (USD)',
+      data: chartData?.prices?.map(([, price]) => price) || [],
+      borderColor: '#00ff88',
+      backgroundColor: 'rgba(0, 255, 136, 0.2)',
+      fill: true,
+      tension: 0.4,
+      pointRadius: 0,
+    },
+  ],
+};
+
 const chartOptions = {
   responsive: true,
   maintainAspectRatio: false,
   plugins: {
     legend: { position: 'top' },
-    title: { display: true, text: `${coin?.name || params.id.toUpperCase()} 7-Day Price (USD)` },
+    title: {
+      display: true,
+      text: `${coin?.name || params.id.toUpperCase()} 7-Day Price (USD)`,
+      font: { size: 18 },
+    },
+    tooltip: {
+      callbacks: {
+        label: (context) => {
+          return `Price: $${Number(context.parsed.y).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+        },
+      },
+    },
   },
   scales: {
-    x: { grid: { display: false } },
+    x: {
+      grid: { display: false }, 
+      ticks: {
+        maxTicksLimit: 15,   
+        autoSkip: true,    
+        font: { size: 11 },
+      },
+    },
     y: {
-      ticks: { callback: (value) => '$' + Number(value).toLocaleString() },
-      grid: { color: 'rgba(255,255,255,0.1)' },
+      ticks: {
+        callback: (value) => '$' + Number(value).toLocaleString(),
+      },
+      grid: { color: 'rgba(255, 255, 255, 0.1)' },
     },
   },
-};
-
-const chartDataConfig = {
-  labels: chartData?.prices?.map(([timestamp]) =>
-    new Date(timestamp).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
-  ) || [],
-  datasets: [
-    {
-      label: 'Price',
-      data: chartData?.prices?.map(([, price]) => price) || [],
-      borderColor: '#00ff88',
-      backgroundColor: 'rgba(0, 255, 136, 0.2)',
-      fill: true,
-      tension: 0.4, // smooth curves
-      pointRadius: 0, // cleaner look
-    },
-  ],
 };
 
 return (
