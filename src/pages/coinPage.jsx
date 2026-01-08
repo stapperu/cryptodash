@@ -17,7 +17,7 @@ const CoinPage = () => {
 	useEffect(() => {
 		const fetchCoin = async () => {
 			try {
-				const res = await fetch(`${API_COINS_URL}/${params.id}`);
+				const res = await fetch(`https://api.coingecko.com/api/v3/coins/${params.id}`);
 				if (!res.ok)
 					throw new Error(
 						"failed to fetch data ( possibly exceeding API calls per minute"
